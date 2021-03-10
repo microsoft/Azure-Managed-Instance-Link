@@ -1,2 +1,1 @@
-# Hybrid-link-for-Azure-SQL-Managed-Instance
-Private customer repository for hybrid link between SQL Server and SQL Managed Instance
+TODO: Create a file called LICENSE (not LICENSE.TXT, LICENSE.md, etc.)…
