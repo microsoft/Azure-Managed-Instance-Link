@@ -13,7 +13,7 @@ This repository is intended to serve as an information hub for customers and par
 
 ## Important information - MUST READ
 
-> **IMPORTANT:** Be advised that hybrid link for Managed Instance is being offered as a **private** preview. All information is shared under **NDA** and is subject to the preview license terms which are available to view [here](/blob/master/LICENSE.MD). You are **not permitted** to share any information about this preview publicly in any form.
+> **IMPORTANT:** Be advised that hybrid link for Managed Instance is being offered as a **private** preview. All information is shared under **NDA** and is subject to the preview license terms which are available to view [here](https://aka.ms/mipg-preview-terms). You are **not permitted** to share any information about this preview publicly in any form.
 > 
 
 ## Announcements
