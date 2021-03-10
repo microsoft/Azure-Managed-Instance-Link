@@ -6,10 +6,10 @@ This repository is intended to serve as an information hub for customers and par
 - [**Get Started**](#get-started)
 - [**Be aware of known limitations**](#known-limitations)
 - [**Participate in the private preview community on Teams**](#questions)
-- [**View active bugs**](/issues)
-- [**View general feedback**](/labels/feedback)
-- [**View enhancement requests**](/labels/enhancement)
-- [**Create a bug, provide feedback, or suggest an improvement**](/issues/new)
+- [**View active bugs**](https://github.com/microsoft/Hybrid-link-for-Azure-SQL-Managed-Instance/issues)
+- [**View general feedback**](https://github.com/microsoft/Hybrid-link-for-Azure-SQL-Managed-Instance/labels/feedback)
+- [**View enhancement requests**](https://github.com/microsoft/Hybrid-link-for-Azure-SQL-Managed-Instance/labels/enhancement)
+- [**Create a bug, provide feedback, or suggest an improvement**](https://github.com/microsoft/Hybrid-link-for-Azure-SQL-Managed-Instance/issues/new)
 
 ## Important information - MUST READ
 
