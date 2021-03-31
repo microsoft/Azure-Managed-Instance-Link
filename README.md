@@ -20,5 +20,6 @@ This repository is intended to serve as an information hub for customers and par
 
 ### March 2021 Private preview release
 
-
+Private preview general information and scenarios supported: [Managed Instance Link Private Preview FAQ](https://aka.ms/mi-link-private-preview)
+Onboarding guide to use the technology: [Managed Instance Link Operational Guide](https://aka.ms/mi-link-operational-guide)
 
