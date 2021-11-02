@@ -28,7 +28,7 @@ Select-AzSubscription -SubscriptionName $SubscriptionID
 # -----------------------------------
 echo "Building API URI"
 $miRG = (Get-AzSqlInstance -InstanceName $ManagedInstanceName).ResourceGroupName
-$uriFull = "https://management.azure.com/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $miRG+ "/providers/Microsoft.Sql/managedInstances/" + $ManagedInstanceName + "/hybridLink/" + $DAGName + "?api-version=2020-11-01-preview"
+$uriFull = "https://management.azure.com/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $miRG+ "/providers/Microsoft.Sql/managedInstances/" + $ManagedInstanceName + "/distributedAvailabilityGroups/" + $DAGName + "?api-version=2021-05-01-preview"
 echo $uriFull
 # -----------------------------------
 # Build API request body
@@ -61,4 +61,5 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # Invoke API call
 # -----------------------------------
 echo "Invoking API call for Managed Instance to join DAG created on SQL Server."
-Invoke-RestMethod -Method PUT -Headers $headers -Uri $uriFull -ContentType "application/json" -Body $bodyFull
+$response = Invoke-WebRequest -Method PUT -Headers $headers -Uri $uriFull -ContentType "application/json" -Body $bodyFull
+echo $response
