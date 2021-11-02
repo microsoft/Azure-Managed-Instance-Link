@@ -22,7 +22,7 @@ Select-AzSubscription -SubscriptionName $SubscriptionID
 # -----------------------------------
 echo "Building API URI"
 $miRG = (Get-AzSqlInstance -InstanceName $ManagedInstanceName).ResourceGroupName
-$uriFull = "https://management.azure.com/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $miRG+ "/providers/Microsoft.Sql/managedInstances/" + $ManagedInstanceName + "/hybridLink/" + $DAGName + "?api-version=2020-11-01-preview"
+$uriFull = "https://management.azure.com/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $miRG+ "/providers/Microsoft.Sql/managedInstances/" + $ManagedInstanceName + "/distributedAvailabilityGroups/" + $DAGName + "?api-version=2021-05-01-preview"
 echo $uriFull
 # -----------------------------------
 # Get auth token and build the header
