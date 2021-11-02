@@ -20,7 +20,7 @@ Select-AzSubscription -SubscriptionName $SubscriptionID
 # -----------------------------------
 echo "Building API URI"
 $miRG = (Get-AzSqlInstance -InstanceName $ManagedInstanceName).ResourceGroupName
-$uriFull = "https://management.azure.com/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $miRG+ "/providers/Microsoft.Sql/managedInstances/" + $ManagedInstanceName + "/hybridLink?api-version=2020-11-01-preview"
+$uriFull = "https://management.azure.com/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $miRG+ "/providers/Microsoft.Sql/managedInstances/" + $ManagedInstanceName + "/distributedAvailabilityGroups?api-version=2021-05-01-preview"
 echo $uriFull
 # -----------------------------------
 # Get auth token and build the header
@@ -36,4 +36,5 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # Invoke API call
 # -----------------------------------
 echo "Invoking API call to view all DAG links on Managed Instance"
-Invoke-RestMethod -Method GET -Headers $headers -Uri $uriFull -ContentType "application/json"
+$response = Invoke-WebRequest -Method GET -Headers $headers -Uri $uriFull -ContentType "application/json"
+echo $response.Content
