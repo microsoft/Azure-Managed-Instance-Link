@@ -4,11 +4,11 @@
 # (C) 2021 Managed Instance product group
 # ====================================================================================
 # Enter your Azure Subscription ID
-$SubscriptionID = "<YourSubscriptionID>"
+$SubscriptionID = "<SubscriptionID>"
 # Enter your Managed Instance name
-$ManagedInstanceName = "<YourManagedInstanceName>"
+$ManagedInstanceName = "<ManagedInstanceName>"
 # Enter the DAG link name
-$DAGName = "<YourDAGName>"
+$DAGName = "<DAGName>"
 
 # ====================================================================================
 # INVOKING THE API CALL -- THIS PART IS NOT USER CONFIGURABLE
