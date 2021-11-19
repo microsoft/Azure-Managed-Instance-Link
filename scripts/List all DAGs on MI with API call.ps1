@@ -1,5 +1,5 @@
 # ====================================================================================
-# POWERSHELL SCRIPT TO VIEW ALL DAG LINKS ON MANAGED INSTANCE
+# POWERSHELL SCRIPT TO VIEW ALL MANAGED INSTANCE LINKS
 # USER CONFIGURABLE VALUES
 # (C) 2021 Managed Instance product group
 # ====================================================================================
@@ -38,6 +38,6 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # -----------------------------------
 # Invoke API call
 # -----------------------------------
-echo "Invoking API call to view all DAG links on Managed Instance"
+echo "Invoking API call to view all Managed Instance links"
 $response = Invoke-WebRequest -Method GET -Headers $headers -Uri $uriFull -ContentType "application/json"
 echo $response.Content
