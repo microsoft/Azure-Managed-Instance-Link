@@ -41,4 +41,4 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # Invoke API call
 # -----------------------------------
 echo "Invoking API call to cutover and delete DAG link on Managed Instance."
-Invoke-RestMethod -Method DELETE -Headers $headers -Uri $uriFull -ContentType "application/json"
+Invoke-WebRequest -Method DELETE -Headers $headers -Uri $uriFull -ContentType "application/json"
