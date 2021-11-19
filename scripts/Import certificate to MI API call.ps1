@@ -8,7 +8,7 @@ $SubscriptionID = "<YourSubscriptionID>"
 # Enter your Managed Instance name
 $ManagedInstanceName = "<YourManagedInstanceName>"
 # Insert the cert public key blob you got from the SQL Server
-$PublicKeyEncoded = "0xYourCertificateFromSQLServer"
+$PublicKeyEncoded = "<PublicKeyEncoded>"
 
 # ====================================================================================
 # INVOKING THE API CALL -- THIS PART IS NOT USER CONFIGURABLE
