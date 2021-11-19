@@ -1,5 +1,5 @@
 # ====================================================================================
-# POWERSHELL SCRIPT TO VIEW INDIVIDUAL DAG LINK STATUS ON MANAGED INSTANCE
+# POWERSHELL SCRIPT TO VIEW INDIVIDUAL MANAGED INSTANCE LINK STATUS
 # USER CONFIGURABLE VALUES
 # (C) 2021 Managed Instance product group
 # ====================================================================================
@@ -13,9 +13,12 @@ $DAGName = "<YourDAGName>"
 # ====================================================================================
 # INVOKING THE API CALL -- THIS PART IS NOT USER CONFIGURABLE
 # ====================================================================================
-# Login to subscription
-echo "Logging to Azure subscription"
-Login-AzAccount
+# Login to subscription if needed
+if ((Get-AzContext ) -eq $null)
+{
+    echo "Logging to Azure subscription"
+    Login-AzAccount
+}
 Select-AzSubscription -SubscriptionName $SubscriptionID
 # -----------------------------------
 # Build URI for the API call
@@ -37,6 +40,6 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # -----------------------------------
 # Invoke API call
 # -----------------------------------
-echo "Invoking API call to vide individual DAG link status on Managed Instance"
+echo "Invoking API call to vide individual Managed Instance link status"
 $response = Invoke-WebRequest -Method GET -Headers $headers -Uri $uriFull -ContentType "application/json"
 echo $response.Content
