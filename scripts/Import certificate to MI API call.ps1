@@ -13,9 +13,12 @@ $PublicKeyEncoded = "0xYourCertificateFromSQLServer"
 # ====================================================================================
 # INVOKING THE API CALL -- THIS PART IS NOT USER CONFIGURABLE
 # ====================================================================================
-# Login to subscription
-echo "Logging to Azure subscription"
-Login-AzAccount
+# Login to subscription if needed
+if ((Get-AzContext ) -eq $null)
+{
+    echo "Logging to Azure subscription"
+    Login-AzAccount
+}
 Select-AzSubscription -SubscriptionName $SubscriptionID
 # -----------------------------------
 # Build URI for the API call
