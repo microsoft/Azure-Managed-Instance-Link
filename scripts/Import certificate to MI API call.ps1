@@ -55,4 +55,4 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # Invoke API call
 # -----------------------------------
 echo "Invoking API call to import SQL Server certificate to Managed Instance."
-Invoke-RestMethod -Method POST -Headers $headers -Uri $uriFull -ContentType "application/json" -Body $bodyFull
+Invoke-WebRequest -Method POST -Headers $headers -Uri $uriFull -ContentType "application/json" -Body $bodyFull
