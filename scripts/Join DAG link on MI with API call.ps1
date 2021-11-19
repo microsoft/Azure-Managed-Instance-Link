@@ -1,5 +1,5 @@
 # ====================================================================================
-# POWERSHELL SCRIPT FOR MANAGED INSTANCE TO JOIN DAG CREATED ON SQL SERVER
+# POWERSHELL SCRIPT FOR CREATING MANAGED INSTANCE LINK
 # USER CONFIGURABLE VALUES
 # (C) 2021 Managed Instance product group
 # ====================================================================================
@@ -19,9 +19,12 @@ $SQLServerIP = "<SQLServerIPaccessibleFromMI>"
 # ====================================================================================
 # INVOKING THE API CALL -- THIS PART IS NOT USER CONFIGURABLE
 # ====================================================================================
-# Login to subscription
-echo "Logging to Azure subscription"
-Login-AzAccount
+# Login to subscription if needed
+if ((Get-AzContext ) -eq $null)
+{
+    echo "Logging to Azure subscription"
+    Login-AzAccount
+}
 Select-AzSubscription -SubscriptionName $SubscriptionID
 # -----------------------------------
 # Build URI for the API call
@@ -60,6 +63,6 @@ $headers.Add("Authorization", "Bearer "+"$authToken")
 # -----------------------------------
 # Invoke API call
 # -----------------------------------
-echo "Invoking API call for Managed Instance to join DAG created on SQL Server."
+echo "Invoking API call for creating Managed Instance link."
 $response = Invoke-WebRequest -Method PUT -Headers $headers -Uri $uriFull -ContentType "application/json" -Body $bodyFull
 echo $response
