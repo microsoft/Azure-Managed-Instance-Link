@@ -4,17 +4,17 @@
 # (C) 2021 Managed Instance product group
 # ====================================================================================
 # Enter your Azure Subscription ID
-$SubscriptionID = "<YourSubscriptionID>"
+$SubscriptionID = "<SubscriptionID>"
 # Enter your Managed Instance name
-$ManagedInstanceName = "<YourManagedInstanceName>"
+$ManagedInstanceName = "<ManagedInstanceName>"
 # Enter AG name that was created on the SQL Server
-$AGName = "<YourAGName>"
+$AGName = "<AGName>"
 # Enter DAG name that was created on SQL Server
-$DAGName = "<YourDAGName>"
+$DAGName = "<DAGName>"
 # Enter database name that was placed in AG for replciation
-$DatabaseName = "<YourDatabaseName>"
+$DatabaseName = "<DatabaseName>"
 # Enter SQL Server IP
-$SQLServerIP = "<SQLServerIPaccessibleFromMI>"
+$ SQLServerIP = "<SQLServerIP>"
 
 # ====================================================================================
 # INVOKING THE API CALL -- THIS PART IS NOT USER CONFIGURABLE
