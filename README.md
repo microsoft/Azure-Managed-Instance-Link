@@ -9,9 +9,11 @@
 
 ### November 2021 limited public preview release
 
-- Preview general information and supported scenarios: [Managed Instance link](https://docs.microsoft.com/azure/azure-sql/managed-instance/link-feature)
+- Preview general information and supported scenarios: [Managed Instance link](https://docs.microsoft.com/azure/azure-sql/managed-instance/link-feature).
 
-- Onboarding guide to use the technology: [Managed Instance Link Operational Guide](https://aka.ms/mi-link-operational-guide)
+- Azure resources need to be allow-listed for Managed Instance link capabilities. To participate in this limited public preview use the [sign-up form](https://aka.ms/mi-link-signup).
+
+- Onboarding guide to use the technology: [Managed Instance Link Operational Guide](https://aka.ms/mi-link-operational-guide).
 
 ## Navigation menu
 
