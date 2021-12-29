@@ -5,7 +5,7 @@
 # ====================================================================================
 # Enter your Azure Subscription ID
 $SubscriptionID = "<YourSubscriptionID>"
-# Enter your Managed Instance name
+# Enter your Managed Instance name - example "sqlmi1"
 $ManagedInstanceName = "<YourManagedInstanceName>"
 # Insert the cert public key blob you got from the SQL Server
 $PublicKeyEncoded = "<PublicKeyEncoded>"
