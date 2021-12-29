@@ -5,7 +5,7 @@
 # ====================================================================================
 # Enter your Azure Subscription ID
 $SubscriptionID = "<SubscriptionID>"
-# Enter your Managed Instance name
+# Enter your Managed Instance name - example "sqlmi1"
 $ManagedInstanceName = "<ManagedInstanceName>"
 # Enter AG name that was created on the SQL Server
 $AGName = "<AGName>"
