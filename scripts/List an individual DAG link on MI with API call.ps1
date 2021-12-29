@@ -5,7 +5,7 @@
 # ====================================================================================
 # Enter your Azure Subscription ID
 $SubscriptionID = "<YourSubscriptionID>"
-# Enter your Managed Instance name
+# Enter your Managed Instance name - example "sqlmi1"
 $ManagedInstanceName = "<YourManagedInstanceName>"
 # Enter the DAG link name
 $DAGName = "<YourDAGName>"
