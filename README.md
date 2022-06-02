@@ -7,15 +7,15 @@
 
 ## Announcements
 
-### May 2022 support for SQL Server 2016 and 2022
+### May 2022 - Introducing support for SQL Server 2016 and 2022
 
 - The link is now supporting SQL Server 2016 and 2022, alongside with already supported 2019. We have also enabled support for Standard editions for SQL Server 2016. See [Managed Instance link](https://docs.microsoft.com/azure/azure-sql/managed-instance/link-feature) page on Azure docs.
 
-### February 2022 public preview release
+### February 2022 - Introducing public preview release
 
 - The link has now entered the public preview and is available in all Azure public regions. National (government) clouds are not supported at this time. All usage instructions are now available [online](https://docs.microsoft.com/azure/azure-sql/managed-instance/link-feature).
 
-### November 2021 limited public preview release
+### November 2021 - introducing limited public preview release
 
 - General information and supported scenarios available [online](https://docs.microsoft.com/azure/azure-sql/managed-instance/link-feature).
 
