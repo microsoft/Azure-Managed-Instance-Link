@@ -5,7 +5,7 @@ Use pages in this repository as instructions on setting up managed instance link
 
 1. First, prepare your environment
 
-  - [Prepare environment for the link setup](managed-instance-link-preparation.md)
+  - [Prepare environment for the link setup (all SQL Servers)](managed-instance-link-preparation.md)
   - [Pre-requirements for SQL Server 2016](managed-instance-link-preparation-wsfc.md)
 
 2. Then setup the link either with SSMS
