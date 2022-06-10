@@ -102,6 +102,8 @@ function New-MiLink {
             
     )
     Begin {
+        #Requires -Modules SqlServer, Az
+
         $interactiveMode = ($PsCmdlet.ParameterSetName -eq "InteractiveParameterSet")
         #if ($interactiveMode) {
         #    $miCredential = Get-Credential -Message "Enter your SQL Managed instance credentials in order to login"
@@ -120,7 +122,7 @@ function New-MiLink {
         $recoveryModel = Invoke-SqlCmd -Query $queryGetRecoveryModel -ServerInstance $SqlInstance
         if ($recoveryModel -ne 1) {
             Write-Verbose "Set recovery model to FULL for database $DatabaseName [started]"
-            Invoke-SqlCmd -Query "ALTER DATABASE [$DatabaseName] SET RECOVERY FULL" -ServerInstance $SqlInstance      
+            Invoke-SqlCmd -Query "ALTER DATABASE [$DatabaseName] SET RECOVERY FULL" -ServerInstance $SqlInstance       
             Write-Verbose "Set recovery model to FULL for database $DatabaseName [completed]"
         }
 
@@ -142,6 +144,9 @@ function New-MiLink {
         # Figure out if we're on a VM https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service?tabs=windows#example-scenarios-for-usage
         Write-Verbose "Get VM info [started]"
         $vmMetadata = Invoke-RestMethod -Headers @{"Metadata" = "true" } -Method GET -NoProxy -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01" 
+        if (!$vmMetadata) {
+            throw "This cmdlet doesn't yet support creating Instance Link from outside Azure VM"
+        }
         $vmName = $vmMetadata.psobject.properties['compute'].value.name
         $vmRgName = $vmMetadata.psobject.properties['compute'].value.resourceGroupName
         $vm = Get-AzVm -ResourceGroupName $vmRgName -Name $vmName
@@ -230,7 +235,7 @@ ENCRYPTION = REQUIRED ALGORITHM AES)
 CREATE AVAILABILITY GROUP [$PrimaryAvailabilityGroup]
 WITH (CLUSTER_TYPE = NONE)
 FOR DATABASE [$DatabaseName]
-REPLICA ON N'chimera' WITH (ENDPOINT_URL = N'$sourceEndpoint', FAILOVER_MODE = MANUAL, AVAILABILITY_MODE = SYNCHRONOUS_COMMIT, SEEDING_MODE = AUTOMATIC, SECONDARY_ROLE(ALLOW_CONNECTIONS = ALL));
+REPLICA ON N'$SqlInstance' WITH (ENDPOINT_URL = N'$sourceEndpoint', FAILOVER_MODE = MANUAL, AVAILABILITY_MODE = SYNCHRONOUS_COMMIT, SEEDING_MODE = AUTOMATIC, SECONDARY_ROLE(ALLOW_CONNECTIONS = ALL));
 "@
         Invoke-Sqlcmd -query $queryAG -ServerInstance $SqlInstance
 
