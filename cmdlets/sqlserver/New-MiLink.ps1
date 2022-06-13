@@ -281,7 +281,7 @@ GO
         if (!$dbmCert) {
             $boxCertName = Read-Host "Creating a new certificate for DBM Endpoint. Enter cert name: "
             $boxCertSubject = Read-Host "Enter cert subject: "
-            $queryCreateCertificate = "CREATE CERTIFICATE $boxCertName WITH SUBJECT = N'$boxCertSubject', EXPIRY_DATE = N'12/12/2030';"
+            $queryCreateCertificate = "CREATE CERTIFICATE $boxCertName WITH SUBJECT = N'$boxCertSubject', EXPIRY_DATE = N'$((get-date).AddYears(10).ToString("dd/MM/yyyy"))';"
             Invoke-SqlCmd -Query $queryCreateCertificate -ServerInstance $SqlInstance
         }
         Write-Verbose "Validate DBM endpoint certificate [completed]"
