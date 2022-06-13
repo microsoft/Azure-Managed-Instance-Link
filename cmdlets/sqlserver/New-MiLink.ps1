@@ -1,3 +1,5 @@
+#Requires -Modules SqlServer, Az.Sql
+
 function New-MiLink {
     <#
     .SYNOPSIS
@@ -102,7 +104,6 @@ function New-MiLink {
             
     )
     Begin {
-        #Requires -Modules SqlServer, Az
 
         $interactiveMode = ($PsCmdlet.ParameterSetName -eq "InteractiveParameterSet")
         #if ($interactiveMode) {
@@ -289,34 +290,37 @@ FROM sys.dm_hadr_physical_seeding_stats
 "@
 
         $tries = 0
-        while (((Get-Job -Id $newLinkJob.Id).State -eq "Running") -and ($tries -le 7)) {
+        Get-Job -Id $newLinkJob.Id | Tee-Object -Variable getJobLink
+        while (($getJobLink.State -eq "Running") -and ($tries -le 7)) {
             Write-Verbose "Checking if link creation is completed, try #$tries"
             Start-Sleep -Seconds 7
             $tries = $tries + 1
             Invoke-Sqlcmd -query $queryMonitor1 -ServerInstance $SqlInstance
             Invoke-Sqlcmd -query $queryMonitor2 -ServerInstance $SqlInstance
-            if ((Get-Job -Id $newLinkJob.Id).State -ne "Running") {
-                Receive-Job -Id $newLinkJob.Id
-                Get-AzSqlInstanceLink -InstanceObject $instance -Name $LinkName
-                break;
-            }
+            Get-Job -Id $newLinkJob.Id | Tee-Object -Variable getJobLink
             try {
-                Get-AzSqlInstanceLink -InstanceObject $instance -Name $LinkName
+                Get-AzSqlInstanceLink -InstanceObject $instance -Name $LinkName | Tee-Object -Variable getLinkResp
+                if ($getLinkResp -and ($getLinkResp.LinkState -eq "Catchup")) {
+                    break
+                }
+                
             }
             catch {
                 Write-Verbose $_
             }
         }
         if ($tries -ge 7) {
-            Write-Host "Script finishing, instance link not yet fully established. Use following commands and TSQL for monitoring"
-            Write-Host "Get-AzSqlInstanceLink -InstanceObject $instance -Name $LinkName"
-            Write-Host "$queryMonitoring1"
-            Write-Host "$queryMonitoring2"
-            Write-Host "Get-Job -Id $newLinkJob.Id | Receve-Job "
+            Write-Host "Script finishing, instance link not yet fully established. Use following commands and TSQL for monitoring:"
+            Write-Host 'Get-AzSqlInstanceLink -InstanceObject $instance -Name $LinkName'
+            Write-Host "$queryMonitor1"
+            Write-Host "$queryMonitor2"
+            Write-Host "Get-Job -Id $($newLinkJob.Id) | Receve-Job "
         }
-        else {        
+        else {   
             Write-Verbose "Create mi link [completed]"
+            Receive-Job -Id $newLinkJob.Id
             Get-AzSqlInstanceLink -InstanceObject $instance -Name $LinkName
+        
         }
     }
 
