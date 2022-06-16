@@ -1,3 +1,5 @@
+#Requires -Modules dbatools, Az.Sql
+
 function Invoke-MiLinkCutover {
     <#
     .SYNOPSIS
@@ -188,7 +190,7 @@ AVAILABILITY GROUP ON
 "@
             if ($PsCmdlet.ShouldProcess("SQL Server and SQL Mi", "Switch link replication mode to SYNC (planned failover)")) {
                 Write-Verbose "Switching replication mode to SYNC [started]"
-                Invoke-SqlCmd -Query $querySyncModeSQL -ServerInstance $SqlInstance
+                Invoke-DbaQuery -Query $querySyncModeSQL -SqlInstance $SqlInstance
                 Set-AzSqlInstanceLink -InstanceObject $managedInstance -LinkName $LinkName -ReplicationMode "SYNC"
                 Write-Verbose "Switching replication mode to SYNC [completed]"
             }
@@ -202,18 +204,18 @@ FROM sys.dm_hadr_database_replica_states drs
 WHERE drs.database_id = DB_ID(N'$DatabaseName')
 AND drs.is_primary_replica = 1
 "@
-            $sqlLSN = (Invoke-SqlCmd -Query $queryLSN -ServerInstance $SqlInstance ).last_hardened_lsn
-            $miLSN = (Invoke-SqlCmd -Query $queryLSN -ServerInstance $managedInstance.FullyQualifiedDomainName -Credential $miCredential).last_hardened_lsn
+            $sqlLSN = (Invoke-DbaQuery -Query $queryLSN -SqlInstance $SqlInstance ).last_hardened_lsn
+            $miLSN = (Invoke-DbaQuery -Query $queryLSN -SqlInstance $managedInstance.FullyQualifiedDomainName -SqlCredential $miCredential).last_hardened_lsn
             Write-Verbose "Fetching LSN from replicas [completed]"
             Write-Host "SQL Server lsn is {$sqlLSN}, SQL managed instance lsn is {$miLSN}"
-                
+            
             # Give some time to secondary replica to catch up. We won't continue if we're not in sync
             Write-Verbose "Waiting for replicas to be in sync [started]"
             $currWait = 0
             while (($sqlLSN -ne $miLSN) -and ($currWait -lt $WaitSecondsForSync)) {
                 Start-Sleep -Seconds 7                    
-                $sqlLSN = (Invoke-SqlCmd -Query $queryLSN -ServerInstance $SqlInstance ).last_hardened_lsn
-                $miLSN = (Invoke-SqlCmd -Query $queryLSN -ServerInstance $managedInstance.FullyQualifiedDomainName -Credential $miCredential).last_hardened_lsn
+                $sqlLSN = (Invoke-DbaQuery -Query $queryLSN -SqlInstance $SqlInstance ).last_hardened_lsn
+                $miLSN = (Invoke-DbaQuery -Query $queryLSN -SqlInstance $managedInstance.FullyQualifiedDomainName -SqlCredential $miCredential).last_hardened_lsn
                 Write-Verbose "Waiting for secondary to catch up. SQL Server lsn is {$sqlLSN}, SQL managed instance lsn is {$miLSN}"
             }
             if ($sqlLSN -ne $miLSN) {
@@ -243,13 +245,13 @@ AND drs.is_primary_replica = 1
 
             if ($CleanupPreference -eq "DELETE_AG_AND_DAG") { 
                 Write-Verbose "Dropping availability groups [started]"
-                Invoke-SqlCmd -Query "DROP AVAILABILITY GROUP [$LinkName]" -ServerInstance $SqlInstance
-                Invoke-SqlCmd -Query "DROP AVAILABILITY GROUP [$PrimaryAvailabilityGroup]" -ServerInstance $SqlInstance
+                Invoke-DbaQuery -Query "DROP AVAILABILITY GROUP [$LinkName]" -SqlInstance $SqlInstance
+                Invoke-DbaQuery -Query "DROP AVAILABILITY GROUP [$PrimaryAvailabilityGroup]" -SqlInstance $SqlInstance
                 Write-Verbose "Dropping availability groups [completed]"
             }
             elseif ($CleanupPreference = "DELETE_DAG") {
                 Write-Verbose "Dropping distributed availability group [started]"
-                Invoke-SqlCmd -Query "DROP AVAILABILITY GROUP [$LinkName]" -ServerInstance $SqlInstance
+                Invoke-DbaQuery -Query "DROP AVAILABILITY GROUP [$LinkName]" -SqlInstance $SqlInstance
                 Write-Verbose "Dropping distributed availability group [completed]"
             }
         }
