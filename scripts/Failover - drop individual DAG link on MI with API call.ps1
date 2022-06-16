@@ -4,6 +4,10 @@
 # USER CONFIGURABLE VALUES
 # (C) 2021-2022 SQL Managed Instance product group
 # ====================================================================================
+
+# This script is deprecated in favor of Remove-AzSqlInstanceLink cmdlet from Az.Sql module
+# https://docs.microsoft.com/en-us/powershell/module/az.sql/remove-azsqlinstancelink?view=azps-8.0.0
+
 # Enter your Azure subscription ID
 $SubscriptionID = "<SubscriptionID>"
 # Enter your managed instance name – for example, "sqlmi1"
