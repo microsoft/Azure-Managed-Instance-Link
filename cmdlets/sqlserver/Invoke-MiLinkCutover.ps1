@@ -5,13 +5,13 @@ function Invoke-MiLinkCutover {
     
     .DESCRIPTION
     Cmdlet that performs cutover from SQL Server (primary) to SQL managed Instance (secondary)
-    Cmdlet can be ran in interactive mode or you can provide all necessary parameters
+    Cmdlet can be ran in interactive mode - or you can provide all necessary parameters in advance, fire, and forget :)
     Cmdlet supports ShouldProcess, can be dry-ran with -WhatIf parameter
     Cmdlet consists of 4 steps:
-        1. switch replication mode to sync
-        2. compare lsns
+        1. switch replication mode to sync [if not ForcedFailover]
+        2. compare LSNs [if not ForcedFailover]
         3. remove the link
-        4. remove ags
+        4. remove ags [optional]
 
     .PARAMETER ResourceGroupName
     Resource group name of Managed Instance 
@@ -55,12 +55,12 @@ function Invoke-MiLinkCutover {
     # Import-Module 'C:\{pathtoscript}\Invoke-MiLinkCutover.ps1'
 
     Invoke-MiLinkCutover -ResourceGroupName CustomerExperienceTeam_RG -ManagedInstanceName chimera-ps-cli-v2 `
-    -SqlInstance chimera -DatabaseName zz -PrimaryAvailabilityGroup AG_test2 -SecondaryAvailabilityGroup MI_test2 -LinkName DAG_test2  -Verbose 
+    -SqlInstance chimera -DatabaseName basic -PrimaryAvailabilityGroup ag_basic -SecondaryAvailabilityGroup mi_basic -LinkName dag_basic  -Verbose 
     
     $cred = Get-Credential
     Invoke-MiLinkCutover -ResourceGroupName CustomerExperienceTeam_RG -ManagedInstanceName chimera-ps-cli-v2 `
-    -SqlInstance chimera -DatabaseName zz -PrimaryAvailabilityGroup AG_test2 -SecondaryAvailabilityGroup MI_test2 `
-    -LinkName DAG_test2 -ManagedInstanceCredential $cred -CleanupPreference "DELETE_AG_AND_DAG" -Verbose
+    -SqlInstance chimera -DatabaseName basic -PrimaryAvailabilityGroup ag_basic -SecondaryAvailabilityGroup mi_basic `
+    -LinkName dag_basic -ManagedInstanceCredential $cred -CleanupPreference "DELETE_AG_AND_DAG" -Verbose
  
     .NOTES
     General notes
@@ -171,6 +171,7 @@ function Invoke-MiLinkCutover {
         $managedInstance = Get-AzSqlInstance -ResourceGroupName $ResourceGroupName -Name $ManagedInstanceName
 
         if ($ForcedCutover) {
+            # For ForcedCutover we won't attempt to synchronize replicas (although they may already be in sync)
             $flagAllowDataLoss = $true 
         }
         else {
@@ -206,6 +207,7 @@ AND drs.is_primary_replica = 1
             Write-Verbose "Fetching LSN from replicas [completed]"
             Write-Host "SQL Server lsn is {$sqlLSN}, SQL managed instance lsn is {$miLSN}"
                 
+            # Give some time to secondary replica to catch up. We won't continue if we're not in sync
             Write-Verbose "Waiting for replicas to be in sync [started]"
             $currWait = 0
             while (($sqlLSN -ne $miLSN) -and ($currWait -lt $WaitSecondsForSync)) {
@@ -222,6 +224,7 @@ AND drs.is_primary_replica = 1
             $flagAllowDataLoss = $true # we could also leave it false for InteractiveMode, but it shouldn't matter as LSNs are in sync at this point
         }
         
+        # We should [optionally] clean up DAG and AG once the link's removed
         if ($PsCmdlet.ShouldProcess("SQL Server and SQL Mi", "Removing the link and availability groups")) {
             Write-Verbose "Removing instance link [started]"
             Remove-AzSqlInstanceLink -ResourceGroupName $ResourceGroupName -InstanceName $ManagedInstanceName -LinkName $LinkName -AllowDataLoss:$flagAllowDataLoss
