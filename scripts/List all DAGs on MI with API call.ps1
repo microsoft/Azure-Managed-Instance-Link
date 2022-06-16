@@ -3,6 +3,10 @@
 # USER CONFIGURABLE VALUES
 # (C) 2021 Managed Instance product group
 # ====================================================================================
+
+# This script is deprecated in favor of Get-AzSqlInstanceLink cmdlet from Az.Sql module
+# https://docs.microsoft.com/en-us/powershell/module/az.sql/get-azsqlinstancelink?view=azps-8.0.0
+
 # Enter your Azure Subscription ID
 $SubscriptionID = "<YourSubscriptionID>"
 # Enter your Managed Instance name - example "sqlmi1"
